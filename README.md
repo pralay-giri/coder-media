@@ -1,6 +1,22 @@
 # Coder Media
 A lightweight social media for learners
-- fell free to contribute
-- a full-stack project
-- react, typescript, tailwind
-- To start contributing you can use both npm or yarn pkg manager
+
+## Installation
+1. Open `coder-media` project
+2. Locate `cd client` directory
+3. Install packages using : 
+```sh
+  $ npm install
+```
+or 
+```sh
+ $ yarn
+```
+4. Run the application using
+```
+ $ npm run dev
+```
+or 
+```sh
+ $ yarn dev
+```
