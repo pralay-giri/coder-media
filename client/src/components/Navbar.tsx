@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import Navitem from "./Navitem";
 
 const Navbar: React.FC = () => {
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
             />
             <div className="relative">
               <p className="text-sm font-semibold">W.R.Middya</p>
-              <p className="text-green-600 text-xs font-semibold">
+              <p className="text-green-600 text-xs font-semibold text-left">
                 <span>●</span> online
               </p>
               {openDropdown && (
