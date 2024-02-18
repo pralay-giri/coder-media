@@ -2,7 +2,7 @@
 A lightweight social media for learners
 
 ## Installation
-The following instruction will guide you how to install packeges in client side.
+
 1. Open `coder-media` project
 2. Locate `cd client` directory
 3. Install packages using : 
