@@ -7,7 +7,7 @@ function Post({postUrl}:PostProps) {
   return (
     <div className='w-[90%] bg-white border border-slate-200 rounded'>
         <div className="flex ml-3 my-4 space-x-4">
-            <img src="images/avater.jpg" alt="avater" className="w-12 h-12 rounded-full outline outline-blue-500"/>
+            <img src="/images/avater.jpg" alt="avater" className="w-12 h-12 rounded-full outline outline-blue-500"/>
             <div>
                 <p className="font-semibold">W.R.Middya</p>
                 <p className="text-xs text-slate-500">13m ago</p>
