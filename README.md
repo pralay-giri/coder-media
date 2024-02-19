@@ -1,8 +1,8 @@
 # Coder Media
-A lightweight social media for learners
+A lightweight social media web application for learning purpose
 
 <div>
-    <img src='./assets/sample1.png' alt='sample-img' width="512" style="margin: 0px auto;"/>
+    <img src='./assets/sample1.png' alt='sample-img' width="800" style="margin: 0px auto;"/>
 </div>
 
 ### Installation
