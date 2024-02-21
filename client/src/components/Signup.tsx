@@ -27,7 +27,7 @@ const Signup: FC = () => {
     };
 
     return (
-        <div className="px-4 dark:bg-[#191919]">
+        <div className="px-4">
             <Input
                 label="username"
                 type="text"
@@ -73,7 +73,7 @@ const Signup: FC = () => {
             <div className="mt-6 mb-2 flex justify-center">
                 <button
                     type="submit"
-                    className="bg-violet-600 text-white font-semibold px-4 py-1 rounded-md hover:text-violet-700 hover:bg-white hover:outline hover:outline-1 hover:outline-violet-700 transition-all my-3"
+                    className="w-full bg-violet-600 text-white font-semibold px-4 py-2 rounded-md hover:text-violet-700 hover:bg-white hover:outline hover:outline-1 hover:outline-violet-700 transition-all my-3"
                 >
                     Sign-Up
                 </button>
