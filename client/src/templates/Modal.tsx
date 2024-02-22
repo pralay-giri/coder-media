@@ -1,14 +1,18 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 import { RxCross2 } from "react-icons/rx";
+import { useAppDispatch } from "../hooks/appStoreHooks";
+import { toggleClose } from "../store/toggleModalSlice";
 
-interface ModalProps {
-    closeModal: Dispatch<SetStateAction<boolean>>;
-}
 
-function Modal({ closeModal }: ModalProps) {
+function Modal() {
     const [toggle, setToggle] = useState<boolean>(true);
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        
+    }, [])
 
     const toggleHandler = () => {
         setToggle(!toggle);
@@ -16,10 +20,10 @@ function Modal({ closeModal }: ModalProps) {
 
     return (
         <>
-            <div className="w-[25%] rounded-md shadow-lg fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-white border border-neutral-200 px-4 py-1 z-50 dark:bg-[#191919] dark:text-white">
+            <div className="w-[26%] rounded-md shadow-lg fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-white border border-neutral-200 px-4 py-1 z-50 dark:bg-[#191919] dark:text-white">
                 <button
                     className="my-3 float-end relative right-2 active:scale-90 text-xl"
-                    onClick={() => closeModal(false)}
+                    onClick={() => dispatch(toggleClose())}
                 >
                     <RxCross2 />
                 </button>

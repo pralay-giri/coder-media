@@ -3,18 +3,19 @@ import WelcomeText from "../components/WelcomeText";
 import Footer from "../components/Footer";
 import ModalProvider from "../utils/ModalProvider";
 import Modal from "./Modal";
+import { useAppSelector } from "../hooks/appStoreHooks";
 
 const AppLayout: React.FC = () => {
-    const [toggleModal, setToggleModal] = useState<boolean>(false);
+    const toggleModal = useAppSelector(({modal: {toggle}}) => toggle)
 
     return (
         <>
             <div className="h-full">
-                <WelcomeText openModal={setToggleModal} />
+                <WelcomeText />
             </div>
             <Footer />
             <ModalProvider>
-                {toggleModal && <Modal closeModal={setToggleModal} />}
+                {toggleModal && <Modal/>}
             </ModalProvider>
         </>
     );
