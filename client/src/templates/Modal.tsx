@@ -1,17 +1,17 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
 import { RxCross2 } from "react-icons/rx";
 
 interface ModalProps {
-    closeModal: Dispatch<SetStateAction<boolean>>;
+    closeModal: Function;
 }
 
 function Modal({ closeModal }: ModalProps) {
     const [toggle, setToggle] = useState<boolean>(true);
 
     const toggleHandler = () => {
-        setToggle(!toggle);
+        setToggle((prev) => !prev);
     };
 
     return (
@@ -25,9 +25,9 @@ function Modal({ closeModal }: ModalProps) {
                 </button>
                 <div className="w-full grid grid-cols-2 place-items-center list-none mb-3">
                     <button
-                        className={`py-1 px-14  rounded-md transition-all  ${
+                        className={`py-1 px-14  rounded-md transition-all hover:opacity-80 ${
                             toggle
-                                ? "bg-neutral-800 text-white"
+                                ? "bg-neutral-800 text-white pointer-events-none opacity-60"
                                 : "text-black bg-gray-200"
                         }`}
                         onClick={toggleHandler}
@@ -35,10 +35,10 @@ function Modal({ closeModal }: ModalProps) {
                         SignIn
                     </button>
                     <button
-                        className={`py-1 px-12  rounded-md transition ${
+                        className={`py-1 px-12  rounded-md transition hover:opacity-80 ${
                             toggle
                                 ? "text-black bg-gray-200"
-                                : "bg-neutral-800 text-white"
+                                : "bg-neutral-800 text-white pointer-events-none opacity-60"
                         }`}
                         onClick={toggleHandler}
                     >

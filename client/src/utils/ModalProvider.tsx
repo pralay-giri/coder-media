@@ -1,26 +1,22 @@
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
-
-const modalRoot = document.querySelector("#modal-root") as HTMLDivElement;
 
 interface ModalProps {
     children: ReactNode;
 }
 
-const ModalProvider = ({ children }: ModalProps) => {
-    const elRef = useRef<HTMLDivElement | null>(null);
-    if (!elRef.current) elRef.current = document.createElement("div");
-
+const ModalProvider = ({ children }: ModalProps): React.ReactPortal => {
     useEffect(() => {
-        const el = elRef.current!;
-        modalRoot.appendChild(el);
-
+        document.documentElement.style.overflow = "hidden";
         return () => {
-            modalRoot.removeChild(el);
+            document.documentElement.style.overflow = "auto";
         };
     }, []);
 
-    return createPortal(children, elRef.current);
+    return createPortal(
+        children,
+        document.querySelector("#modal-root") as HTMLDivElement
+    );
 };
 
 export default ModalProvider;

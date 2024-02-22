@@ -4,22 +4,30 @@ import { PiMoonStarsFill } from "react-icons/pi";
 import { IoSunny } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { initTheme, changeTheme } from "../store/preferanceSlice";
+import { Dispatch } from "@reduxjs/toolkit";
+import { initTheme, changeTheme } from "../store/slices/preferanceSlice";
+import { toggleModalState } from "../store/slices/userSlice";
 import { HiMiniComputerDesktop } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 type Mode = "LIGHT" | "DARK" | "SYSTEM";
 
 const Navbar: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
+
     const theme = useSelector(
         (store: any): string => store.preferanceSlice.mode
     );
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+    const isUserOuthenticated = useSelector(
+        (store: any): string => store.userSlice.isUserOuthenticated
+    );
+
     const [openDropdown, setOpenDropdown] = useState<boolean>(false);
     const [isThemeModalVisible, setIsThemeModalVisible] =
         useState<boolean>(false);
 
     useEffect(() => {
-        dispatch(initTheme() as any);
+        dispatch(initTheme());
     }, []);
 
     const handleTheme = (mode: Mode) => {
@@ -42,13 +50,17 @@ const Navbar: React.FC = () => {
         }
     };
 
+    const showModal = () => {
+        dispatch(toggleModalState(true));
+    };
+
     const handleThemeModal = () => {
         setIsThemeModalVisible((prev) => !prev);
     };
 
     return (
-        <nav className="grid grid-cols-2 place-items-center py-3 border-b-2 border-neutral-700 dark:bg-[#191919] dark:*:text-white">
-            <div className="flex justify-center items-center">
+        <nav className="flex items-center justify-between px-10 py-3 border border-b-2 border-neutral-700 dark:bg-[#191919] dark:*:text-white">
+            <Link to="/" className="flex justify-center items-center ">
                 <i>
                     <img
                         src="./src/assets/coder-logo.svg"
@@ -56,24 +68,22 @@ const Navbar: React.FC = () => {
                         width={256}
                     />
                 </i>
+            </Link>
+            <div className="flex items-center gap-5">
+                <ul className="flex justify-center items-center space-x-10">
+                    <li>
+                        <Navitem url="/">Home</Navitem>
+                    </li>
+                    <li>
+                        <Navitem url="/about">About</Navitem>
+                    </li>
+                    <li>
+                        <Navitem url="/dashboard">Dashboard</Navitem>
+                    </li>
+                </ul>
             </div>
             <div className="flex items-center gap-5">
-                {!isLoggedIn ? (
-                    <ul className="flex justify-center items-center space-x-10">
-                        <Navitem url="/">Home</Navitem>
-                        <Navitem url="/about">About</Navitem>
-                        <li>
-                            <button className="px-4 py-1 rounded-md bg-blue-500 text-white">
-                                SignIn
-                            </button>
-                        </li>
-                        <li>
-                            <button className="px-4 py-1 rounded-md bg-blue-500 text-white">
-                                SignUp
-                            </button>
-                        </li>
-                    </ul>
-                ) : (
+                {isUserOuthenticated ? (
                     <button
                         className="flex items-center space-x-3"
                         onClick={() => setOpenDropdown((preState) => !preState)}
@@ -107,8 +117,17 @@ const Navbar: React.FC = () => {
                             )}
                         </div>
                     </button>
+                ) : (
+                    <div>
+                        <button
+                            className="px-3 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 text-white"
+                            onClick={showModal}
+                        >
+                            Join
+                        </button>
+                    </div>
                 )}
-                <div className="">
+                <div>
                     {theme === "DARK" ? (
                         <IoSunny
                             onClick={handleThemeModal}
@@ -121,7 +140,7 @@ const Navbar: React.FC = () => {
                         />
                     )}
                     {isThemeModalVisible && (
-                        <div className="p-1 rounded-lg absolute bg-white dark:bg-[#191919] dark:shadow-sm dark:shadow-stone-50 border dark:border  shadow-lg flex flex-col gap-2 *:flex *:items-center *:gap-1 *:p-1 *:rounded-md *:transition-all *:text-lg">
+                        <div className="p-1 rounded-lg absolute top-16 right-0 bg-white dark:bg-[#191919] dark:shadow-sm dark:shadow-stone-50 border dark:border  shadow-lg flex flex-col gap-2 *:flex *:items-center *:gap-1 *:p-1 *:rounded-md *:transition-all *:text-lg">
                             <button
                                 onClick={() => handleTheme("DARK")}
                                 className="hover:bg-gray-200 dark:hover:text-[#191919]"

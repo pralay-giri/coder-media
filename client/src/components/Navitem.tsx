@@ -1,26 +1,23 @@
 import { FC, ReactNode } from "react";
 import { NavLink } from "react-router-dom";
 
-interface NavitemProps  {
-    url: string
-    children: ReactNode
+interface NavitemProps {
+    url: string;
+    children: ReactNode;
 }
 
 const Navitem: FC<NavitemProps> = ({ children, url }) => {
-  return (
-    <>
-      <li>
+    return (
         <NavLink
-          to={url}
-          className={({ isActive }) =>
-            (isActive ? "font-semibold underline " : "") + "text-lg"
-          }
+            to={url}
+            className={({ isActive }) =>
+                (isActive ? "font-semibold text-purple-500 underline " : " ") +
+                "text-lg hover:text-purple-500 transition-all relative "
+            }
         >
-          {children}
+            {children}
         </NavLink>
-      </li>
-    </>
-  );
+    );
 };
 
 export default Navitem;

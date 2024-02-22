@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import WelcomeText from "../components/WelcomeText";
 import Footer from "../components/Footer";
 import ModalProvider from "../utils/ModalProvider";
 import Modal from "./Modal";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleModalState } from "../store/slices/userSlice";
 
 const AppLayout: React.FC = () => {
-    const [toggleModal, setToggleModal] = useState<boolean>(false);
+    const disptach = useDispatch();
+    const modalState = useSelector((state: any) => state.userSlice.modalState);
+    const hadleToggleModal = (state: boolean) => {
+        disptach(toggleModalState(state));
+    };
 
     return (
         <>
             <div className="h-full">
-                <WelcomeText openModal={setToggleModal} />
+                <WelcomeText openModal={hadleToggleModal} />
             </div>
             <Footer />
-            <ModalProvider>
-                {toggleModal && <Modal closeModal={setToggleModal} />}
-            </ModalProvider>
+            {modalState && (
+                <ModalProvider>
+                    <Modal closeModal={hadleToggleModal} />
+                </ModalProvider>
+            )}
         </>
     );
 };

@@ -1,5 +1,5 @@
 import { Slice, createSlice } from "@reduxjs/toolkit";
-import { toogleTheme } from "../helper/toogleTheme";
+import { toogleTheme } from "../../helper/toogleTheme";
 
 const preferance: Slice = createSlice({
     name: "preferance",

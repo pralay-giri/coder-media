@@ -1,10 +1,23 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface WelcomeProps {
-    openModal: Dispatch<SetStateAction<boolean>>;
+    openModal: Function;
 }
 
 const WelcomeText: FC<WelcomeProps> = ({ openModal }) => {
+    const navigator = useNavigate();
+    const isUserOuthenticated = useSelector(
+        (state: any) => state.userSlice.isUserOuthenticated
+    );
+    const handleClick = () => {
+        if (!isUserOuthenticated) {
+            openModal(true);
+        }
+        navigator("/dashboard");
+    };
+
     return (
         <div className="h-full flex justify-center items-center bg-[url('./src/assets/background.svg')] bg-cover bg-center dark:bg-[url('./src/assets/darkBackground.svg')] dark:*:text-white">
             <div>
@@ -17,9 +30,7 @@ const WelcomeText: FC<WelcomeProps> = ({ openModal }) => {
                 <div className="flex space-x-2 mt-5 justify-center">
                     <button
                         className="bg-neutral-700 text-white font-semibold px-4 py-1 rounded-md hover:text-black hover:bg-white hover:outline hover:outline-1 hover:outline-neutral-700 transition-all"
-                        onClick={() => {
-                            openModal(true);
-                        }}
+                        onClick={handleClick}
                     >
                         Get Started
                     </button>

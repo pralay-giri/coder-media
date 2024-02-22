@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, useEffect, useState } from "react";
+import { ChangeEventHandler, FC, SyntheticEvent, useState } from "react";
 import Input from "./Input";
 
 const Login: FC = () => {
@@ -7,18 +7,18 @@ const Login: FC = () => {
         password: "",
     });
 
-    useEffect(() => {
-        console.log(input);
-    });
-
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
         target: { name, value },
     }) => {
         setInput({ ...input, [name]: value });
     };
 
+    const handleFormSubmit = (e: SyntheticEvent) => {
+        e.preventDefault();
+    };
+
     return (
-        <div className="px-4">
+        <form className="px-4" onSubmit={handleFormSubmit}>
             <Input
                 label="username"
                 type="text"
@@ -43,7 +43,7 @@ const Login: FC = () => {
                     Sign-In
                 </button>
             </div>
-        </div>
+        </form>
     );
 };
 
