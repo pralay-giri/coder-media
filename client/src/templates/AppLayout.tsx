@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import WelcomeText from "../components/WelcomeText";
 import Footer from "../components/Footer";
 import ModalProvider from "../utils/ModalProvider";
