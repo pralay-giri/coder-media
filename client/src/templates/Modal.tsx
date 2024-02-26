@@ -3,16 +3,13 @@ import Login from "../components/Login";
 import Signup from "../components/Signup";
 import { RxCross2 } from "react-icons/rx";
 import { useAppDispatch } from "../hooks/appStoreHooks";
-import { toggleClose } from "../store/toggleModalSlice";
-
+import { toggleClose } from "../store/slices/toggleModalSlice";
 
 function Modal() {
     const [toggle, setToggle] = useState<boolean>(true);
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        
-    }, [])
+    useEffect(() => {}, []);
 
     const toggleHandler = () => {
         setToggle(!toggle);

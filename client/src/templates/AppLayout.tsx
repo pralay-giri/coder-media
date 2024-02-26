@@ -6,7 +6,7 @@ import Modal from "./Modal";
 import { useAppSelector } from "../hooks/appStoreHooks";
 
 const AppLayout: React.FC = () => {
-    const toggleModal = useAppSelector(({modal: {toggle}}) => toggle)
+    const toggleModal = useAppSelector(({ modal: { toggle } }) => toggle);
 
     return (
         <>
@@ -14,9 +14,7 @@ const AppLayout: React.FC = () => {
                 <WelcomeText />
             </div>
             <Footer />
-            <ModalProvider>
-                {toggleModal && <Modal/>}
-            </ModalProvider>
+            <ModalProvider>{toggleModal && <Modal />}</ModalProvider>
         </>
     );
 };
