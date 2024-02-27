@@ -8,6 +8,7 @@ interface ModalProps {
 }
 
 const ModalProvider = ({ children }: ModalProps) => {
+    if (!children) return;
     const elRef = useRef<HTMLDivElement | null>(null);
     if (!elRef.current) elRef.current = document.createElement("div");
 
