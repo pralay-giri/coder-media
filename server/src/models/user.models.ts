@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcryptjs";
 import { salt } from "../constants";
+import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
     {
@@ -11,6 +12,11 @@ const userSchema = new Schema(
             lowercase: true,
             index: true,
             unique: true,
+        },
+        fullName: {
+            type: String,
+            required: true,
+            trim: true,
         },
         email: {
             type: String,
@@ -24,10 +30,6 @@ const userSchema = new Schema(
             type: String,
             required: [true, "password is required"],
         },
-        confirmPassword: {
-            type: String,
-            required: true,
-        },
         avater: {
             type: String, // Cloudinary url...
         },
@@ -35,12 +37,16 @@ const userSchema = new Schema(
             {
                 type: Schema.Types.ObjectId,
                 ref: "Post",
+                default: [],
+                required: false
             },
         ],
         memberOf: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Community",
+                default: [],
+                required: false
             },
         ],
     },
@@ -53,5 +59,35 @@ userSchema.pre("save", async function (next) {
     this.password = hash;
     next();
 });
+
+userSchema.methods.generateAccessToken = function () {
+    jwt.sign(
+        {
+            data: {
+                _id: this._id,
+                fullName: this.fullName,
+                email: this.email,
+            },
+        },
+        process.env?.ACCESS_TOKEN_SECRET || "acc-secret",
+        {
+            expiresIn: process.env.ACCESS_TOKEN_EXPERY,
+        }
+    );
+};
+
+userSchema.methods.generateRefreshToken = function() {
+    jwt.sign(
+        {
+            data: {
+                _id: this._id
+            }
+        },
+        process.env?.REFRESH_TOKEN_SECRET || "ref-secret",
+        {
+            expiresIn: process.env.REFRESH_TOKEN_EXPERY
+        }
+    )
+}
 
 export const User = model("User", userSchema);

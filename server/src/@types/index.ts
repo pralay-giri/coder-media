@@ -2,10 +2,10 @@ import { Types } from "mongoose";
 
 export interface UserInfer {
     _id: Types.ObjectId;
+    fullName: string;
     username: string;
     email: string;
     password: string;
-    confirmPassword: string;
     avater: string;
     posts: UserInfer[];
     memberOf: CommunityInfer[];
