@@ -7,8 +7,6 @@ export interface UserInfer {
     email: string;
     password: string;
     avater: string;
-    posts: UserInfer[];
-    memberOf: CommunityInfer[];
 }
 
 export interface PostInfer {
