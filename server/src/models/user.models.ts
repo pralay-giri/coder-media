@@ -32,23 +32,7 @@ const userSchema = new Schema(
         },
         avater: {
             type: String, // Cloudinary url...
-        },
-        posts: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Post",
-                default: [],
-                required: false
-            },
-        ],
-        memberOf: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Community",
-                default: [],
-                required: false
-            },
-        ],
+        }
     },
     { timestamps: true }
 );

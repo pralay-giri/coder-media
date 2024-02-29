@@ -13,8 +13,6 @@ interface TypedRequest<T> extends Request {
 
 export const registerUser = asyncHandler(
     async (req: TypedRequest<UserInfer>, res: Response, next: NextFunction) => {
-        console.log(req.body);
-        console.log(req.files)
         // get user details from frontend
         const { fullName, username, email, password } = req.body;
 
@@ -39,9 +37,9 @@ export const registerUser = asyncHandler(
         if (req.files?.avater[0]?.path && req.files?.avater.length > 0) {
             avaterLocalPath = req.files?.avater[0]?.path;
         }
+        
         console.log(avaterLocalPath);
-
-        // upload them to cloudinary, avatar
+        // upload them to ☁️cloudinary, avatar
         const imgInfo = await uploadOnCloudinary(avaterLocalPath);
         if (!imgInfo) {
             throw new ApiError(500, "Error while uploading image");
