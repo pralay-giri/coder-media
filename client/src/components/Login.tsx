@@ -1,14 +1,11 @@
 import { ChangeEventHandler, FC, useEffect, useState } from "react";
 import Input from "./Input";
+import { defaultProfile } from "../utils/constant";
 
 const Login: FC = () => {
     const [input, setInput] = useState<{ username: string; password: string }>({
         username: "",
         password: "",
-    });
-
-    useEffect(() => {
-        console.log(input);
     });
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
@@ -18,7 +15,14 @@ const Login: FC = () => {
     };
 
     return (
-        <div className="px-4">
+        <form className="px-4">
+            <div className="mx-auto w-20 aspect-square my-5 overflow-hidden">
+                <img
+                    src={defaultProfile}
+                    alt="logo"
+                    className="rounded-full object-cover object-center brightness-50"
+                />
+            </div>
             <Input
                 label="username"
                 type="text"
@@ -43,7 +47,7 @@ const Login: FC = () => {
                     Sign-In
                 </button>
             </div>
-        </div>
+        </form>
     );
 };
 

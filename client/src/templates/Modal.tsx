@@ -6,7 +6,7 @@ import { useAppDispatch } from "../hooks/appStoreHooks";
 import { toggleClose } from "../store/slices/toggleModalSlice";
 
 function Modal() {
-    const [toggle, setToggle] = useState<boolean>(true);
+    const [toggle, setToggle] = useState<boolean>(false);
     const dispatch = useAppDispatch();
 
     useEffect(() => {}, []);
@@ -24,29 +24,29 @@ function Modal() {
                 >
                     <RxCross2 />
                 </button>
+                <div className="my-5">{toggle ? <Login /> : <Signup />}</div>
                 <div className="w-full grid grid-cols-2 place-items-center list-none mb-3">
                     <button
-                        className={`py-1 px-14  rounded-md transition-all  ${
+                        className={`py-1 px-14  rounded-md transition-all bg-neutral-800 text-white ${
                             toggle
-                                ? "bg-neutral-800 text-white"
-                                : "text-black bg-gray-200"
+                                ? "pointer-events-none opacity-70"
+                                : "dark:text-black dark:bg-white text-white"
                         }`}
                         onClick={toggleHandler}
                     >
                         SignIn
                     </button>
                     <button
-                        className={`py-1 px-12  rounded-md transition ${
+                        className={`py-1 px-12 rounded-md transition-all bg-neutral-800 text-white ${
                             toggle
-                                ? "text-black bg-gray-200"
-                                : "bg-neutral-800 text-white"
+                                ? "dark:text-black dark:bg-white text-white"
+                                : "pointer-events-none opacity-70"
                         }`}
                         onClick={toggleHandler}
                     >
                         SignUp
                     </button>
                 </div>
-                <div>{toggle ? <Login /> : <Signup />}</div>
             </div>
             <div
                 id="overlay"

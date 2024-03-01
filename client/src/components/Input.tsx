@@ -22,6 +22,7 @@ const Input: FC<InputProps> = ({
                 type={type}
                 onChange={inputChangeHandler}
                 value={inputValue}
+                autoComplete="true"
                 className="w-full focus-visible:outline-1 focus-visible:outline-blue-400 focus-visible:shadow focus-visible:shadow-blue-400 border-none dark:bg-transparent outline outline-1 rounded-sm transition-all px-2 py-1"
                 name={label}
             />
