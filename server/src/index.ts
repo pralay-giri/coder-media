@@ -17,7 +17,9 @@ console.log("cloud_name:: ", process.env.CLOUDINARY_CLOUD_NAME);
 connectDB()
     .then(() => {
         app.listen(process.env.PORT || 8080, () => {
-            console.log(`🌐 Server is running on port ${process.env.PORT} `);
+            console.log(
+                `🌐 Server is running on port ${process.env.PORT || 8080} `
+            );
         });
     })
     .catch((err) => {

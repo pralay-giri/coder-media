@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { UserInfer } from "../@types";
 import { ApiError } from "../utils/ApiError";
 import { User } from "../models/user.models";
-import uploadOnCloudinary from "../utils/cloudinary";
+import { uploadOnCloudinary } from "../utils/cloudinary";
 import { ApiResponse } from "../utils/ApiResponse";
 
 interface TypedRequest<T> extends Request {
@@ -14,30 +14,30 @@ interface TypedRequest<T> extends Request {
 export const registerUser = asyncHandler(
     async (req: TypedRequest<UserInfer>, res: Response, next: NextFunction) => {
         // get user details from frontend
-        const { fullName, username, email, password } = req.body;
+        const { fullName, userName, email, password } = req.body;
 
         // validation - not empty
         if (
-            [fullName, username, email, password].some(
+            [fullName, userName, email, password].some(
                 (feild) => feild?.trim() === ""
             )
         ) {
             throw new ApiError(401, "Some fields are missing.");
         }
 
-        // check if user already exists: username, email
-        const existUser = await User.findOne({
-            $or: [{ username }, { email }],
+        // check if user already exists: userName, email
+        const existUser: any = await User.findOne({
+            $or: [{ userName }, { email }],
         });
 
         if (existUser) throw new ApiError(409, "User already exist.");
 
         // check for images, check for avatar
         let avaterLocalPath;
-        if (req.files?.avater[0]?.path && req.files?.avater.length > 0) {
+        if (req.files?.avater?.[0]?.path && req.files?.avater.length > 0) {
             avaterLocalPath = req.files?.avater[0]?.path;
         }
-        
+
         console.log(avaterLocalPath);
         // upload them to ☁️cloudinary, avatar
         const imgInfo = await uploadOnCloudinary(avaterLocalPath);
@@ -48,7 +48,7 @@ export const registerUser = asyncHandler(
         // create user object - create entry in db
         const user = await User.create({
             fullName,
-            username,
+            userName,
             email,
             password,
             avater: imgInfo?.secure_url || "",
