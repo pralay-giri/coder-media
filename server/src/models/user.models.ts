@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const userSchema = new Schema(
     {
-        username: {
+        userName: {
             type: String,
             required: true,
             trim: true,
@@ -32,7 +32,11 @@ const userSchema = new Schema(
         },
         avater: {
             type: String, // Cloudinary url...
-        }
+        },
+        refreshToken: {
+            type: String,
+            default: null,
+        },
     },
     { timestamps: true }
 );
@@ -43,35 +47,4 @@ userSchema.pre("save", async function (next) {
     this.password = hash;
     next();
 });
-
-userSchema.methods.generateAccessToken = function () {
-    jwt.sign(
-        {
-            data: {
-                _id: this._id,
-                fullName: this.fullName,
-                email: this.email,
-            },
-        },
-        process.env?.ACCESS_TOKEN_SECRET || "acc-secret",
-        {
-            expiresIn: process.env.ACCESS_TOKEN_EXPERY,
-        }
-    );
-};
-
-userSchema.methods.generateRefreshToken = function() {
-    jwt.sign(
-        {
-            data: {
-                _id: this._id
-            }
-        },
-        process.env?.REFRESH_TOKEN_SECRET || "ref-secret",
-        {
-            expiresIn: process.env.REFRESH_TOKEN_EXPERY
-        }
-    )
-}
-
 export const User = model("User", userSchema);
