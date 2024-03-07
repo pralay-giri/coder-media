@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import { Collection } from "mongoose";
 
 const uploadOnCloudinary = async (localPath: string) => {
     try {
@@ -19,4 +20,17 @@ const uploadOnCloudinary = async (localPath: string) => {
     }
 };
 
-export default uploadOnCloudinary;
+const deleteOnCloudinary = async (url: string) => {
+    try {
+        const publicKey = url.slice(
+            url.lastIndexOf("/") + 1,
+            url.lastIndexOf(".")
+        );
+        console.log(publicKey);
+        await cloudinary.uploader.destroy(publicKey);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export { uploadOnCloudinary, deleteOnCloudinary };

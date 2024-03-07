@@ -1,24 +1,40 @@
-import { ChangeEventHandler, FC, useEffect, useState } from "react";
+import {
+    ChangeEvent,
+    ChangeEventHandler,
+    FC,
+    FormEventHandler,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import Input from "./Input";
+import { FULLNAME_REGX, defaultProfile } from "../utils/constant";
+import { IoCameraOutline } from "react-icons/io5";
+import { signUpHandler } from "../helper/signUphandler";
+import { EMAIL_REGX, PASSWORD_REGX, USER_NAME_REGX } from "../utils/constant";
+import { AxiosError, AxiosResponse } from "axios";
 
 interface InputStateInterface {
-    username: string;
+    userName: string;
     email: string;
     password: string;
     confirmPassword: string;
+    fullName: string;
 }
 
 const Signup: FC = () => {
     const [input, setInput] = useState<InputStateInterface>({
-        username: "",
+        fullName: "",
+        userName: "",
         email: "",
         password: "",
         confirmPassword: "",
     });
-
-    useEffect(() => {
-        console.log(input);
-    });
+    const profileInputRef = useRef<HTMLInputElement>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedImageLink, setSelectedImageLink] = useState<string>("");
+    const [error, setError] = useState<string>("");
+    const [loading, setIsLoadding] = useState<boolean>(false);
 
     const handleInputChange: ChangeEventHandler<HTMLInputElement> = ({
         target: { name, value },
@@ -26,13 +42,98 @@ const Signup: FC = () => {
         setInput({ ...input, [name]: value });
     };
 
+    const handleFile = (): void => {
+        if (!profileInputRef.current) return;
+        profileInputRef.current.click();
+    };
+
+    const handleSelectedProfile = (e: ChangeEvent<HTMLInputElement>) => {
+        // previewing the image that user select
+        e.preventDefault();
+        if (!e.target.files?.[0]) return;
+        setSelectedFile(e.target.files?.[0]);
+        const imageLInk = URL.createObjectURL(e.target.files[0]);
+        setSelectedImageLink(imageLInk);
+    };
+
+    useEffect(() => {
+        // revocking the generated link for image
+        return () => {
+            if (!selectedImageLink) return;
+            URL.revokeObjectURL(selectedImageLink);
+        };
+    });
+
+    const handleSignUp: FormEventHandler = async (e) => {
+        e.preventDefault();
+
+        let error: string = "";
+        if (!FULLNAME_REGX.test(input.fullName))
+            error = "not a valid full name ex:john doe";
+        else if (!USER_NAME_REGX.test(input.userName))
+            error =
+                "userName start with @ and contains lower and uppercase later and 0-9";
+        else if (!EMAIL_REGX.test(input.email))
+            error = "gmail not valid ex:example@gmail.com";
+        else if (!PASSWORD_REGX.test(input.password))
+            error = "minimum length of password can be 6";
+        else if (!selectedFile) error = "select a profile photo";
+        else if (input.password !== input.confirmPassword)
+            error = "password and current password need to be same";
+        if (error.trim().length) {
+            setError(error);
+            return;
+        } else setError("");
+
+        setIsLoadding(true);
+        await signUpHandler({
+            ...input,
+            profile: selectedFile,
+        });
+        setIsLoadding(false);
+    };
+
     return (
-        <div className="px-4">
+        <form className="px-4" onSubmit={handleSignUp}>
+            <div
+                className="relative my-5 mx-auto w-20 h-20 rounded-full flex items-center justify-center cursor-pointer overflow-hidden hover:brightness-75 transition-all border-2 dark:border-gray-300 border-gray-600"
+                onClick={handleFile}
+            >
+                <img
+                    src={selectedImageLink || defaultProfile}
+                    alt="logo"
+                    className={`rounded-full object-cover object-center scale-105 ${
+                        !selectedImageLink && "brightness-50"
+                    }`}
+                />
+                {!selectedImageLink && (
+                    <div className="overlay absolute *:text-xl text-white">
+                        <IoCameraOutline />
+                    </div>
+                )}
+                <input
+                    type="file"
+                    name="avater"
+                    ref={profileInputRef}
+                    id="profile-input"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleSelectedProfile}
+                />
+            </div>
             <Input
-                label="username"
+                label="fullName"
                 type="text"
                 inputChangeHandler={handleInputChange}
-                inputValue={input.username}
+                inputValue={input.fullName}
+            >
+                full name
+            </Input>
+            <Input
+                label="userName"
+                type="text"
+                inputChangeHandler={handleInputChange}
+                inputValue={input.userName}
             >
                 Username
             </Input>
@@ -53,32 +154,26 @@ const Signup: FC = () => {
                 Password
             </Input>
             <Input
-                label="confirm-password"
+                label="confirmPassword"
                 type="password"
                 inputChangeHandler={handleInputChange}
                 inputValue={input.confirmPassword}
             >
-                Confirm Password
+                Confirm password
             </Input>
-            <div className="my-3">
-                <input
-                    type="file"
-                    className="block w-full text-sm text-slate-500
-                      file:mr-4 file:py-2 file:px-4 file:rounded-md
-                      file:border-0 file:text-sm file:font-semibold
-                      file:bg-pink-200 file:text-pink-700
-                      hover:file:bg-pink-300 file:cursor-pointer"
-                />
-            </div>
-            <div className="mt-6 mb-2 flex justify-center">
+            {error && <p className="text-red-500 mt-2">{error}</p>}
+            <div className="my-1 flex justify-center">
                 <button
                     type="submit"
-                    className="w-full bg-violet-600 text-white font-semibold px-4 py-2 rounded-md hover:text-violet-700 hover:bg-white hover:outline hover:outline-1 hover:outline-violet-700 transition-all my-3"
+                    className={`w-full bg-violet-600 text-white font-semibold px-4 py-2 rounded-md hover:text-violet-700 hover:bg-white hover:outline hover:outline-1 hover:outline-violet-700 transition-all my-3 ${
+                        loading &&
+                        "bg-white text-violet-600 pointer-events-none"
+                    }`}
                 >
-                    Sign-Up
+                    {loading ? "loadding..." : "Sign-Up"}
                 </button>
             </div>
-        </div>
+        </form>
     );
 };
 

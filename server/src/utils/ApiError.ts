@@ -1,6 +1,6 @@
 import { ApiErrorInfer } from "../@types";
 
-class ApiError extends Error implements ApiErrorInfer{
+class ApiError extends Error implements ApiErrorInfer {
     statusCode!: number;
     message: string;
     errors!: Error[];

@@ -14,7 +14,11 @@ const AppLayout: React.FC = () => {
                 <WelcomeText />
             </div>
             <Footer />
-            <ModalProvider>{toggleModal && <Modal />}</ModalProvider>
+            {toggleModal && (
+                <ModalProvider>
+                    <Modal />
+                </ModalProvider>
+            )}
         </>
     );
 };
